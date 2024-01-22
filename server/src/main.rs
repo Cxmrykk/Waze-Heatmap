@@ -12,6 +12,10 @@ use config_file::FromConfigFile;
 #[derive(Deserialize)]
 struct Config {
     interval: u64,
+    top: f32,
+    bottom: f32,
+    left: f32,
+    right: f32,
 }
 
 #[derive(Insertable)]
@@ -87,7 +91,7 @@ async fn main() {
     let mut interval = tokio::time::interval(Duration::from_secs(config.interval));
     
     loop {
-        let initial_area = Area::new(-29.378291639798185, -35.61245928409031, 133.48388671875003, 158.79638671875003);
+        let initial_area = Area::new(config.top, config.bottom, config.left, config.right);
         let mut queue: VecDeque<Area> = VecDeque::new();
         queue.push_back(initial_area);
 
