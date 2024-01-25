@@ -11,6 +11,7 @@ use config_file::FromConfigFile;
 
 #[derive(Deserialize)]
 struct Config {
+    alert: String,
     interval: u64,
     top: f32,
     bottom: f32,
@@ -66,9 +67,9 @@ async fn get_alerts(area: &Area) -> Result<Value, reqwest::Error> {
     resp.json().await
 }
 
-fn process_alerts(alerts: &[Value], conn: &mut SqliteConnection) {
+fn process_alerts(alerts: &[Value], conn: &mut SqliteConnection, alert_type: &str) {
     for alert in alerts {
-        if alert["type"].as_str().unwrap() == "POLICE" {
+        if alert["type"].as_str().unwrap() == alert_type {
             let new_alert = Alert {
                 uuid: alert["uuid"].as_str().unwrap().to_string(),
                 millis: alert["pubMillis"].as_i64().unwrap(),
@@ -109,8 +110,8 @@ async fn main() {
                             println!("Too many alerts. Splitting chunks...");
                             queue.extend(area.split());
                         } else {
-                            println!("Found {} alerts, adding POLICE alerts to database:", alerts.len());
-                            process_alerts(alerts, &mut conn);
+                            println!("Found {} alerts, adding {} alerts to database:", alerts.len(), config.alert);
+                            process_alerts(alerts, &mut conn, &config.alert);
                         }
                     }
                 },

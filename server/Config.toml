@@ -1,5 +1,6 @@
-interval = 300
-top = -29.378291639798185
-bottom = -35.61245928409031
-left = 133.48388671875003
-right = 158.79638671875003
+alert = "POLICE"
+interval = 1200
+top = -10.683
+bottom = -43.633
+left = 113.15
+right = 153.633
