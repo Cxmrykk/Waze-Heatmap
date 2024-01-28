@@ -34,3 +34,19 @@ cargo run
 cd ../client
 node server.js
 ```
+
+### Configuration
+- Alert: `POLICE` by default (Inspect element on [waze.com](https://www.waze.com/live-map/) and reverse engineer the geolocation API response in the network tab)
+- Top/Bottom: Longitude (South)
+- Left/Right: Latitude (East)
+- By default, the values cover the whole of Australia 🇦🇺
+
+> /server/Config.toml
+```toml
+alert = "POLICE"
+interval = 1200
+top = -10.683
+bottom = -43.633
+left = 113.15
+right = 153.633
+```
