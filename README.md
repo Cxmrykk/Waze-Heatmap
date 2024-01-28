@@ -1,27 +1,30 @@
-### Tools
-- [Leaflet Heat](https://github.com/Leaflet/Leaflet.heat/)
-- [Leaflet](https://leafletjs.com/)
+### Dependencies
+- [NodeJS](https://nodejs.org/en) and [NPM](https://nodejs.org/en) (Latest)
+- [Rust](https://www.rust-lang.org/) and [Cargo](https://www.rust-lang.org/)
 
-### Server Dependencies
-- `libsqlite3-dev`
-- `default-libmysqlclient-dev`
-- `libpq-dev`
+Server (Rust/Cargo)
+  - [Diesel](https://diesel.rs/guides/getting-started.html) (Dependencies required! Click for more info)
 
-### Response:
-- `alerts`: [200 maximum]
-- `endTimeMillis`: number
-- `startTimeMIllis`: number
-- `startTime`: string
-- `endTime`: string 
+### Setup
+```sh
+# Clone the project directory
+git clone https://github.com/Cxmrykk/Waze-Heatmap.git
+cd Waze-Heatmap/
 
-### Request (URL) Parameters:
-> https://www.waze.com/live-map/api/georss
-- `top`: -33.8463184046000
-- `bottom`: -33.89429422015962
-- `left`: 151.1265563964844
-- `right`: 151.3243103027344
-- `env`: row
-- `types`: alerts, traffic, users 
+# Run Diesel setup (Make sure cargo is in $PATH for Diesel to work)
+cd server/
+cargo build
+diesel setup
 
-### Precision
-- Waze has 6 trailing digits of decimal coordinate precision (OSM Standard - https://wiki.openstreetmap.org/wiki/Precision_of_coordinates)
+# Modify Config.toml (Alternative editors: nano, code, etc)
+vim Config.toml
+
+# Run the server in a separate process (E.g. using screen)
+# Note that the server doesn't need to be running in the background
+# for the Web GUI to work, but it does need to be executed at least once
+cargo run
+
+# Run the Web GUI
+cd ../client
+node server.js
+```
