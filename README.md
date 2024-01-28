@@ -3,7 +3,13 @@
 - [Rust](https://www.rust-lang.org/) and [Cargo](https://www.rust-lang.org/)
 
 Server (Rust/Cargo)
-  - [Diesel](https://diesel.rs/guides/getting-started.html) (Dependencies required! Click for more info)
+  - [Diesel](https://diesel.rs/guides/getting-started.html) (Dependencies required, see below)
+
+> By default diesel CLI depends on the following client libraries:
+>- **libpq** for the PostgreSQL backend
+>- **libmysqlclient** for the Mysql backend
+>- **libsqlite3** for the SQLite backend
+
 
 ### Setup
 ```sh
