@@ -35,13 +35,12 @@ cd ../client
 node server.js
 ```
 
-### Configuration
+### Configuration (Config.toml)
 - Alert: `POLICE` by default (Inspect element on [waze.com](https://www.waze.com/live-map/) and reverse engineer the geolocation API response in the network tab)
 - Top/Bottom: Longitude (South)
 - Left/Right: Latitude (East)
-- By default, the values cover the whole of Australia 🇦🇺
 
-> /server/Config.toml
+By default, the values cover the whole of Australia 🇦🇺
 ```toml
 alert = "POLICE"
 interval = 1200
