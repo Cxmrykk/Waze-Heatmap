@@ -24,23 +24,21 @@ diesel setup
 
 # Modify Config.toml (Alternative editors: nano, code, etc)
 vim Config.toml
-
-# Run the server in a separate process (E.g. using screen)
-# Note that the server doesn't need to be running in the background
-# for the Web GUI to work, but it does need to be executed at least once
-cargo run
-
-# Run the Web GUI
-cd ../client
-node server.js
 ```
 
-### Configuration (Config.toml)
-- Alert: `POLICE` by default (Inspect element on [waze.com](https://www.waze.com/live-map/) and reverse engineer the geolocation API response in the network tab)
-- Top/Bottom: Longitude (South)
-- Left/Right: Latitude (East)
+### Execution (Using `screen`)
+```sh
+#!/bin/bash
+export HEATPATH=/path/to/project/source
+screen -dmS heatmap-client bash -c 'cd $HEATPATH/client && exec node server.js'
+screen -dmS heatmap-server bash -c 'cd $HEATPATH/server && exec cargo run'
+```
 
-By default, the values cover the whole of Australia 🇦🇺
+### Configuration (`Config.toml`)
+- Alert: `POLICE` by default (Inspect element on [waze.com](https://www.waze.com/live-map/) and reverse engineer the geolocation API response in the network tab)
+- Top/Bottom: Longitude range (South)
+- Left/Right: Latitude range (East)
+
 ```toml
 alert = "POLICE"
 interval = 1200
