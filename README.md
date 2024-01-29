@@ -17,12 +17,15 @@ Server (Rust/Cargo)
 >- **libsqlite3** for the SQLite backend
 
 
-### Setup
+### Installation
 ```sh
 # Clone the project directory
 git clone https://github.com/Cxmrykk/Waze-Heatmap.git
 cd Waze-Heatmap/
+```
 
+#### Server
+```sh
 # Run Diesel setup (Make sure cargo is in $PATH for Diesel to work)
 cd server/
 cargo build
@@ -30,6 +33,14 @@ diesel setup
 
 # Modify Config.toml (Alternative editors: nano, code, etc)
 vim Config.toml
+cd ../ # Exit server directory
+```
+
+#### Client
+```sh
+cd client/
+npm install
+cd ../ # Exit client directory
 ```
 
 ### Execution (Using `screen`)
