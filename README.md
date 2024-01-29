@@ -1,3 +1,9 @@
+<div align="center">
+  <h2>Waze Heatmap</h2>
+  <img src="./heatmap.png">
+  <p>Figure 1: Police reports in Sydney, Australia</p>
+</div>
+
 ### Dependencies
 - [NodeJS](https://nodejs.org/en) and [NPM](https://nodejs.org/en) (Latest)
 - [Rust](https://www.rust-lang.org/) and [Cargo](https://www.rust-lang.org/)
