@@ -28,7 +28,7 @@ cd Waze-Heatmap/
 ```sh
 # Run Diesel setup (Make sure cargo is in $PATH for Diesel to work)
 cd server/
-cargo build
+cargo install diesel_cli
 diesel setup
 
 # Modify Config.toml (Alternative editors: nano, code, etc)
