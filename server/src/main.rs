@@ -1,12 +1,16 @@
 extern crate reqwest;
 extern crate diesel;
+extern crate log;
 
+use log::*;
+use env_logger::Builder;
 use diesel::prelude::*;
 use diesel::sqlite::SqliteConnection;
 use serde::Deserialize;
 use serde_json::Value;
 use std::collections::VecDeque;
 use std::time::Duration;
+use std::io::Write;
 use config_file::FromConfigFile;
 
 #[derive(Deserialize)]
@@ -80,7 +84,7 @@ fn process_alerts(alerts: &[Value], conn: &mut SqliteConnection, alert_type: &st
                 .values(&new_alert)
                 .execute(conn) {
                     Ok(_) => (),
-                    Err(e) => println!("Error saving new alert: {:?}", e),
+                    Err(e) => error!("Error saving new alert: {:?}", e),
                 }
         }
     }
@@ -88,6 +92,14 @@ fn process_alerts(alerts: &[Value], conn: &mut SqliteConnection, alert_type: &st
 
 #[tokio::main]
 async fn main() {
+    Builder::new()
+        .format(|buf, record| {
+            let now = chrono::Local::now();
+            writeln!(buf, "[{}] [{}] {}", now.date_naive().format("%d/%m/%y"), now.time().format("%H:%M:%S"), record.args())
+        })
+        .filter(None, LevelFilter::Info)
+        .init();
+
     let config = Config::from_config_file("Config.toml").unwrap();
     let mut interval = tokio::time::interval(Duration::from_secs(config.interval));
     
@@ -97,25 +109,25 @@ async fn main() {
         queue.push_back(initial_area);
 
         let mut conn = SqliteConnection::establish("db.sqlite")
-            .expect("Error connecting to the database");
+            .expect("Error connecting to the database; Program cannot continue without a database.");
 
         while let Some(area) = queue.pop_front() {
             match get_alerts(&area).await {
                 Ok(json) => {
-                    println!("Checking top={}, bottom={}, left={}, right={}:", area.top, area.bottom, area.left, area.right);
+                    info!("Checking top={}, bottom={}, left={}, right={}:", area.top, area.bottom, area.left, area.right);
 
                     let alerts = json["alerts"].as_array();
                     if let Some(alerts) = alerts {
                         if alerts.len() >= 200 {
-                            println!("Too many alerts. Splitting chunks...");
+                            info!("Too many alerts. Splitting chunks...");
                             queue.extend(area.split());
                         } else {
-                            println!("Found {} alerts, adding {} alerts to database:", alerts.len(), config.alert);
+                            info!("Found {} alerts, adding {} alerts to database:", alerts.len(), config.alert);
                             process_alerts(alerts, &mut conn, &config.alert);
                         }
                     }
                 },
-                Err(e) => println!("Error getting alerts: {:?}", e),
+                Err(e) => error!("Error getting alerts: {:?}", e),
             }
         }
 
