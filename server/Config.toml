@@ -1,5 +1,5 @@
 alert = "POLICE"
-interval = 1200
+interval = 300
 top = -10.683
 bottom = -43.633
 left = 113.15
